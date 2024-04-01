@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">boggle</string>
+    <string name="score_label">Score:</string>
+    <string name="new_game">New Game</string>
 </resources>
