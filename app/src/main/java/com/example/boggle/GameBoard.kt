@@ -15,8 +15,17 @@ class GameBoard: Fragment() {
 
         return inflater.inflate(R.layout.gameboard, container, false)
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         populateGrid()
     }
+
+    fun regenerateBoard() { //for hitting new game
+        populateGrid()
+    }
+
 
     private fun populateGrid() {
         val letterGrid: GridLayout = view?.findViewById(R.id.letterGrid) ?: return
