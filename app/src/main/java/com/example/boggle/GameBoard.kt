@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridLayout
 import androidx.fragment.app.Fragment
+import kotlin.random.Random
 
 class GameBoard: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +41,13 @@ class GameBoard: Fragment() {
     private fun generateRandomLetters(): List<Char> {
         val vowels = listOf('A', 'E', 'I', 'O', 'U')
         val consonants = ('A'..'Z').filterNot { it in vowels }
-        return vowels
+
+        val numVowel = Random.nextInt(3,6)
+        val randomVowels = List(numVowel) { vowels.random() }
+
+        val numCons = 16-numVowel
+        val randomCons= List(numCons) { consonants.random() }
+
+        return (randomVowels + randomCons).shuffled()
     }
 }
