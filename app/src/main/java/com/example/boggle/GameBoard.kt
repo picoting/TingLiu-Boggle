@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlin.random.Random
 
@@ -58,7 +59,9 @@ class GameBoard: Fragment() {
     }
 
     private fun onButtonSelected(button: Button) {
+        val currentWordTextView: TextView = view?.findViewById(R.id.currWord) ?: return
         currentWord.append(button.text.toString())
+        currentWordTextView.text = currentWord
         selectedButtons.add(button)
         button.isEnabled = false // Optional: disable button to prevent re-selection
     }
