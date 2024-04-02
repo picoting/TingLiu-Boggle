@@ -66,6 +66,14 @@ class GameBoard: Fragment() {
         button.isEnabled = false // Optional: disable button to prevent re-selection
     }
 
+    private fun clearWord() {
+        //
+    }
+
+    private fun submitWord() {
+        //
+    }
+
     private fun generateRandomLetters(): List<Char> {
         val vowels = listOf('A', 'E', 'I', 'O', 'U')
         val consonants = ('A'..'Z').filterNot { it in vowels }
