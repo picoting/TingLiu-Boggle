@@ -9,6 +9,9 @@ import android.widget.GridLayout
 import androidx.fragment.app.Fragment
 import kotlin.random.Random
 
+private lateinit var buttons: Array<Array<Button?>>
+private val currentWord = StringBuilder()
+private val selectedButtons = mutableListOf<Button>()
 class GameBoard: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -33,18 +36,31 @@ class GameBoard: Fragment() {
 
         val letters = generateRandomLetters()
 
-        for (i in letters.indices) {
-            val button = Button(context).apply {
-                text = letters[i].toString()
-                layoutParams = GridLayout.LayoutParams().apply {
-                    //gahhhhhhh
+        buttons = Array(4) { Array<Button?>(4) { null } }
+
+        for (row in 0 until 4) {
+            for (col in 0 until 4) {
+                val button = Button(context).apply {
+                    text = letters[row * 4 + col].toString()
+                    layoutParams = GridLayout.LayoutParams().apply {
+                        width = 200
+                        height = 200
+                        setMargins(5, 5, 5, 5)
+                    }
+                    setOnClickListener {
+                        onButtonSelected(this)
+                    }
                 }
-                setOnClickListener {
-                    //handle gameplay
-                }
+                letterGrid.addView(button)
+                buttons[row][col] = button
             }
-            letterGrid.addView(button)
         }
+    }
+
+    private fun onButtonSelected(button: Button) {
+        currentWord.append(button.text.toString())
+        selectedButtons.add(button)
+        button.isEnabled = false // Optional: disable button to prevent re-selection
     }
 
     private fun generateRandomLetters(): List<Char> {

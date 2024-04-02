@@ -10,10 +10,10 @@
         android:id="@+id/gameStatusText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/instructions"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp"/>
+        android:text="@string/instructions"
+        android:textSize="18sp" />
 
     <GridLayout
         android:id="@+id/letterGrid"
@@ -27,22 +27,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:layout_marginTop="16dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/clearButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/clear"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:text="@string/clear" />
 
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/submit"/>
+            android:text="@string/submit" />
     </LinearLayout>
 
 </LinearLayout>
