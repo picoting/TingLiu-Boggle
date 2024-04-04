@@ -1,5 +1,6 @@
 package com.example.boggle
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,9 @@ class GameState: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         scoreView = view.findViewById(R.id.scoreValue)
+
+        val newGameButton: Button = view.findViewById(R.id.newGameButton)
+        newGameButton.setOnClickListener { newGame() }
     }
 
     fun updateScore(requireView: View, score: Int) {
@@ -32,5 +36,18 @@ class GameState: Fragment() {
             currScore = 0
         }
         scoreView?.text = currScore.toString()
+    }
+
+    private fun newGame() {
+        currScore = 0
+        scoreView?.text = currScore.toString()
+        listener?.newGame()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is GameState.GameStateListener) {
+            listener = context
+        }
     }
 }

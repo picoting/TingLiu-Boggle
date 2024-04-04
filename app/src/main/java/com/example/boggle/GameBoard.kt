@@ -220,7 +220,14 @@ class GameBoard: Fragment() {
     }
 
     fun newGame(requireView: View) {
+        populateGrid()
+        generatedWords.clear()
+        currentWord.clear()
+        selectedButtons.forEach { it.isEnabled = true }
+        selectedButtons.clear()
 
+        lastRow = -10
+        lastCol = -10
     }
 
     override fun onAttach(context: Context) {
