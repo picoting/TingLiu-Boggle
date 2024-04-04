@@ -27,6 +27,8 @@ private var lastRow: Int = -10
 private var lastCol: Int = -10
 
 private lateinit var validWords: Set<String>
+
+private val generatedWords = mutableSetOf<String>()
 class GameBoard: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,10 +51,13 @@ class GameBoard: Fragment() {
     }
 
     private fun submitWord() {
+        val score: Int
+
         if (isValid(currentWord.toString(), validWords)) {
-            Toast.makeText(context, "Valid word!", Toast.LENGTH_SHORT).show()
+            score = calculateScore(currentWord.toString())
+            Toast.makeText(context, "Valid word! + $score", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(context, "Invalid word.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Invalid word. -10", Toast.LENGTH_SHORT).show()
         }
 
         val currentWordTextView: TextView = view?.findViewById(R.id.currWord) ?: return
@@ -164,7 +169,8 @@ class GameBoard: Fragment() {
     private fun isValid(word: String, validWords: Set<String>): Boolean {
         return validWords.contains(word.trim()) &&
                 validVowels(word.trim()) &&
-                word.length >= 4
+                word.length >= 4 &&
+                generatedWords.add(word)
     }
 
     private fun validVowels(word: String): Boolean {
@@ -177,5 +183,28 @@ class GameBoard: Fragment() {
         }
 
         return false
+    }
+
+    fun calculateScore(word: String): Int {
+        var score = 0
+        val specialConsonants = setOf('S', 'Z', 'P', 'X', 'Q')
+        var containsSpecialConsonant = false
+
+        for (char in word) {
+            when (char) {
+                in "AEIOU" -> score += 5
+                in specialConsonants -> {
+                    score += 1
+                    containsSpecialConsonant = true
+                }
+                else -> score += 1
+            }
+        }
+
+        if (containsSpecialConsonant) {
+            score *= 2
+        }
+
+        return score
     }
 }
