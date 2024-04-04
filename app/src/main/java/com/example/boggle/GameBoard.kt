@@ -207,4 +207,10 @@ class GameBoard: Fragment() {
 
         return score
     }
+
+    interface GameBoardActions {
+        fun addPoints(points: Int)
+        fun removePoints(points: Int)
+        fun startNewGame()
+    }
 }
