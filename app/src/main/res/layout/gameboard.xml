@@ -28,8 +28,9 @@
         android:id="@+id/currWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="current word here"
-        android:textSize="18sp"></TextView>
+        android:text=""
+        android:textSize="18sp">
+    </TextView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,14 +45,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/clear"
-            android:onClick="clearWord"/>
 
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/submit"
-            android:onClick="submitWord"/>
     </LinearLayout>
 
 </LinearLayout>

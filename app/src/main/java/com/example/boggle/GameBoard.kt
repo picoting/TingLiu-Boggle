@@ -1,5 +1,6 @@
 package com.example.boggle
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.GridLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import java.io.BufferedReader
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -35,6 +37,8 @@ class GameBoard: Fragment() {
         currentWordTextView = view.findViewById(R.id.currWord)
         val clearButton: Button = view.findViewById(R.id.clearButton)
         val submitButton: Button = view.findViewById(R.id.submitButton)
+
+        val wordbank = context?.let { readWordbank(it) }
 
         clearButton.setOnClickListener { clearWord() }
         submitButton.setOnClickListener { submitWord() }
@@ -111,7 +115,7 @@ class GameBoard: Fragment() {
         lastRow = row
         lastCol = col
 
-        Toast.makeText(context, "Selected Row: $row, Col: $col", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "Selected Row: $row, Col: $col", Toast.LENGTH_SHORT).show()
     }
 
     private fun generateRandomLetters(): List<Char> {
@@ -132,5 +136,11 @@ class GameBoard: Fragment() {
             return true
         }
         return abs(row - lastRow) <= 1 && abs(col - lastCol) <= 1
+    }
+
+    private fun readWordbank(context: Context): String {
+        return context.assets.open("words.txt").use { inputStream ->
+            inputStream.bufferedReader().use(BufferedReader::readText)
+        }
     }
 }
