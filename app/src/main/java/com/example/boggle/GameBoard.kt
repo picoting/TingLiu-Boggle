@@ -162,6 +162,20 @@ class GameBoard: Fragment() {
     }
 
     private fun isValid(word: String, validWords: Set<String>): Boolean {
-        return validWords.contains(word.trim())
+        return validWords.contains(word.trim()) &&
+                validVowels(word.trim()) &&
+                word.length >= 4
+    }
+
+    private fun validVowels(word: String): Boolean {
+        val vowels = "AEIOU"
+        var vowelCount = 0
+
+        for (char in word) {
+            if (char in vowels) vowelCount++
+            if (vowelCount >= 2) return true
+        }
+
+        return false
     }
 }
