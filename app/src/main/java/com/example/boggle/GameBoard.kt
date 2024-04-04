@@ -185,7 +185,7 @@ class GameBoard: Fragment() {
         return false
     }
 
-    fun calculateScore(word: String): Int {
+    private fun calculateScore(word: String): Int {
         var score = 0
         val specialConsonants = setOf('S', 'Z', 'P', 'X', 'Q')
         var containsSpecialConsonant = false
