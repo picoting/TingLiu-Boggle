@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class MainActivity : AppCompatActivity(), GameStateFragment.GameStateListener, GameBoard.GameBoardListener {
+class MainActivity : AppCompatActivity(), GameState.GameStateListener, GameBoard.GameBoardListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -15,11 +15,11 @@ class MainActivity : AppCompatActivity(), GameStateFragment.GameStateListener, G
     override fun newGame() {
         Log.d("MainActivity", "onNewGameClicked() called")
         val board = supportFragmentManager.findFragmentById(R.id.gameboard) as GameBoard?
-        boardFragment?.newGame(boardFragment.requireView())
+        board?.newGame(board.requireView())
     }
 
-    override fun submitPressed(currentGuessText: CharSequence) {
+    override fun submitPressed(score: Int) {
         val state = supportFragmentManager.findFragmentById(R.id.gamestate) as GameState?
-        scoreFragment?.checkWord(scoreFragment.requireView(), currentGuessText)
+        state?.updateScore(state.requireView(), score)
     }
 }

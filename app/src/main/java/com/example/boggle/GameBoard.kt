@@ -16,22 +16,23 @@ import java.util.Locale
 import kotlin.math.abs
 import kotlin.random.Random
 
-private lateinit var buttons: Array<Array<Button?>>
-
-private val currentWord = StringBuilder()
-private val selectedButtons = mutableListOf<Button>()
-
-private var currentWordTextView: TextView? = null
-
-private var lastRow: Int = -10
-private var lastCol: Int = -10
-
-private lateinit var validWords: Set<String>
-
-private val generatedWords = mutableSetOf<String>()
-
-private var score: Int = 0
 class GameBoard: Fragment() {
+
+    private lateinit var buttons: Array<Array<Button?>>
+
+    private val currentWord = StringBuilder()
+    private val selectedButtons = mutableListOf<Button>()
+
+    private var currentWordTextView: TextView? = null
+
+    private var lastRow: Int = -10
+    private var lastCol: Int = -10
+
+    private lateinit var validWords: Set<String>
+
+    private val generatedWords = mutableSetOf<String>()
+
+    private var score: Int = 0
 
     interface GameBoardListener {
         fun submitPressed(score: Int)
@@ -161,7 +162,7 @@ class GameBoard: Fragment() {
         return abs(row - lastRow) <= 1 && abs(col - lastCol) <= 1
     }
 
-    fun loadWords(context: Context): Set<String> {
+    private fun loadWords(context: Context): Set<String> {
         val words = mutableSetOf<String>()
         try {
             context.assets.open("words.txt").bufferedReader().useLines { lines ->
@@ -217,12 +218,16 @@ class GameBoard: Fragment() {
         return score
     }
 
-/*
-    interface GameBoardActions {
-        fun addPoints(points: Int)
-        fun removePoints(points: Int)
-        fun startNewGame()
+    fun newGame(requireView: View) {
+
     }
- */
+
+    /*
+        interface GameBoardActions {
+            fun addPoints(points: Int)
+            fun removePoints(points: Int)
+            fun startNewGame()
+        }
+     */
 
 }
