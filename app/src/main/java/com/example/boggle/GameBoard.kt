@@ -65,6 +65,7 @@ class GameBoard: Fragment() {
             score = calculateScore(currentWord.toString())
             Toast.makeText(context, "Valid word! + $score", Toast.LENGTH_SHORT).show()
         } else {
+            score = -10
             Toast.makeText(context, "Invalid word. -10", Toast.LENGTH_SHORT).show()
         }
 
@@ -222,12 +223,11 @@ class GameBoard: Fragment() {
 
     }
 
-    /*
-        interface GameBoardActions {
-            fun addPoints(points: Int)
-            fun removePoints(points: Int)
-            fun startNewGame()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is GameBoard.GameBoardListener) {
+            listener = context
         }
-     */
+    }
 
 }

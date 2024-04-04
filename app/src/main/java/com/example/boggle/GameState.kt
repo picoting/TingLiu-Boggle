@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 class GameState: Fragment() {
 
     private var scoreView: TextView? = null
+    private var currScore: Int = 0
     interface GameStateListener {
         fun newGame()
     }
@@ -26,6 +27,10 @@ class GameState: Fragment() {
     }
 
     fun updateScore(requireView: View, score: Int) {
-        scoreView?.text = score.toString()
+        currScore += score
+        if (currScore < 0) {
+            currScore = 0
+        }
+        scoreView?.text = currScore.toString()
     }
 }
