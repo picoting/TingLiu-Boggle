@@ -7,15 +7,24 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import kotlin.math.abs
 import kotlin.random.Random
 
 private lateinit var buttons: Array<Array<Button?>>
+
 private val currentWord = StringBuilder()
 private val selectedButtons = mutableListOf<Button>()
+
+private var currentWordTextView: TextView? = null
+
+private var lastRow: Int = -10
+private var lastCol: Int = -10
 class GameBoard: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
 
         return inflater.inflate(R.layout.gameboard, container, false)
 
@@ -23,7 +32,39 @@ class GameBoard: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        currentWordTextView = view.findViewById(R.id.currWord)
+        val clearButton: Button = view.findViewById(R.id.clearButton)
+        val submitButton: Button = view.findViewById(R.id.submitButton)
+
+        clearButton.setOnClickListener { clearWord() }
+        submitButton.setOnClickListener { submitWord() }
         populateGrid()
+    }
+
+    private fun submitWord() {
+        val currentWordTextView: TextView = view?.findViewById(R.id.currWord) ?: return
+
+        currentWord.clear()
+        selectedButtons.forEach { it.isEnabled = true }
+        selectedButtons.clear()
+
+        lastRow = -10
+        lastCol = -10
+
+        currentWordTextView.text = currentWord
+    }
+
+    private fun clearWord() {
+        val currentWordTextView: TextView = view?.findViewById(R.id.currWord) ?: return
+
+        currentWord.clear()
+        selectedButtons.forEach { it.isEnabled = true }
+        selectedButtons.clear()
+
+        lastRow = -10
+        lastCol = -10
+
+        currentWordTextView.text = currentWord
     }
 
     fun regenerateBoard() { //for hitting new game
@@ -49,7 +90,7 @@ class GameBoard: Fragment() {
                         setMargins(5, 5, 5, 5)
                     }
                     setOnClickListener {
-                        onButtonSelected(this)
+                        onButtonSelected(this, row, col)
                     }
                 }
                 letterGrid.addView(button)
@@ -58,20 +99,19 @@ class GameBoard: Fragment() {
         }
     }
 
-    private fun onButtonSelected(button: Button) {
+    private fun onButtonSelected(button: Button, row: Int, col: Int) {
+        if (!isAdjacent(row, col)) return //not adjacent
+
         val currentWordTextView: TextView = view?.findViewById(R.id.currWord) ?: return
         currentWord.append(button.text.toString())
         currentWordTextView.text = currentWord
         selectedButtons.add(button)
         button.isEnabled = false // Optional: disable button to prevent re-selection
-    }
 
-    private fun clearWord() {
-        //
-    }
+        lastRow = row
+        lastCol = col
 
-    private fun submitWord() {
-        //
+        Toast.makeText(context, "Selected Row: $row, Col: $col", Toast.LENGTH_SHORT).show()
     }
 
     private fun generateRandomLetters(): List<Char> {
@@ -85,5 +125,12 @@ class GameBoard: Fragment() {
         val randomCons= List(numCons) { consonants.random() }
 
         return (randomVowels + randomCons).shuffled()
+    }
+
+    private fun isAdjacent(row: Int, col: Int): Boolean {
+        if (lastRow == -10 || lastCol == -10) { //first letter
+            return true
+        }
+        return abs(row - lastRow) <= 1 && abs(col - lastCol) <= 1
     }
 }
