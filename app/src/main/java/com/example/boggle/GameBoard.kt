@@ -29,7 +29,14 @@ private var lastCol: Int = -10
 private lateinit var validWords: Set<String>
 
 private val generatedWords = mutableSetOf<String>()
+
+private var score: Int = 0
 class GameBoard: Fragment() {
+
+    interface GameBoardListener {
+        fun submitPressed(score: Int)
+    }
+    private var listener: GameBoard.GameBoardListener? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -51,7 +58,7 @@ class GameBoard: Fragment() {
     }
 
     private fun submitWord() {
-        val score: Int
+        //val score: Int
 
         if (isValid(currentWord.toString(), validWords)) {
             score = calculateScore(currentWord.toString())
@@ -59,6 +66,8 @@ class GameBoard: Fragment() {
         } else {
             Toast.makeText(context, "Invalid word. -10", Toast.LENGTH_SHORT).show()
         }
+
+        listener?.submitPressed(score)
 
         val currentWordTextView: TextView = view?.findViewById(R.id.currWord) ?: return
 
@@ -208,9 +217,12 @@ class GameBoard: Fragment() {
         return score
     }
 
+/*
     interface GameBoardActions {
         fun addPoints(points: Int)
         fun removePoints(points: Int)
         fun startNewGame()
     }
+ */
+
 }

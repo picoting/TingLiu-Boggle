@@ -2,22 +2,24 @@ package com.example.boggle
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-class MainActivity : AppCompatActivity(), GameBoard.GameBoardActions {
+class MainActivity : AppCompatActivity(), GameStateFragment.GameStateListener, GameBoard.GameBoardListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
-
-    override fun addPoints(points: Int) {
-        //adding points
+    override fun newGame() {
+        Log.d("MainActivity", "onNewGameClicked() called")
+        val board = supportFragmentManager.findFragmentById(R.id.gameboard) as GameBoard?
+        boardFragment?.newGame(boardFragment.requireView())
     }
 
-    override fun removePoints(points: Int) {
-        //removing points (down to 0)
-    }
-
-    override fun startNewGame() {
-        //start a new game (refresh board)
+    override fun submitPressed(currentGuessText: CharSequence) {
+        val state = supportFragmentManager.findFragmentById(R.id.gamestate) as GameState?
+        scoreFragment?.checkWord(scoreFragment.requireView(), currentGuessText)
     }
 }

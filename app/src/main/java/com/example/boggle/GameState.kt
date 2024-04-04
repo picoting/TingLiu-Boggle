@@ -7,6 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
 class GameState: Fragment() {
+    interface GameStateListener {
+        fun newGame()
+    }
+    private var listener: GameState.GameStateListener? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
