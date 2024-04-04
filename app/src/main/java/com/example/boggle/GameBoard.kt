@@ -11,6 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import java.io.BufferedReader
+import java.io.IOException
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -23,10 +25,11 @@ private var currentWordTextView: TextView? = null
 
 private var lastRow: Int = -10
 private var lastCol: Int = -10
+
+private lateinit var validWords: Set<String>
 class GameBoard: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
 
         return inflater.inflate(R.layout.gameboard, container, false)
 
@@ -38,7 +41,7 @@ class GameBoard: Fragment() {
         val clearButton: Button = view.findViewById(R.id.clearButton)
         val submitButton: Button = view.findViewById(R.id.submitButton)
 
-        val wordbank = context?.let { readWordbank(it) }
+        validWords = loadWords(requireContext())
 
         clearButton.setOnClickListener { clearWord() }
         submitButton.setOnClickListener { submitWord() }
@@ -46,6 +49,12 @@ class GameBoard: Fragment() {
     }
 
     private fun submitWord() {
+        if (isValid(currentWord.toString(), validWords)) {
+            Toast.makeText(context, "Valid word!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Invalid word.", Toast.LENGTH_SHORT).show()
+        }
+
         val currentWordTextView: TextView = view?.findViewById(R.id.currWord) ?: return
 
         currentWord.clear()
@@ -138,9 +147,21 @@ class GameBoard: Fragment() {
         return abs(row - lastRow) <= 1 && abs(col - lastCol) <= 1
     }
 
-    private fun readWordbank(context: Context): String {
-        return context.assets.open("words.txt").use { inputStream ->
-            inputStream.bufferedReader().use(BufferedReader::readText)
+    fun loadWords(context: Context): Set<String> {
+        val words = mutableSetOf<String>()
+        try {
+            context.assets.open("words.txt").bufferedReader().useLines { lines ->
+                lines.forEach { line ->
+                    words.add(line.trim().uppercase(Locale.getDefault()))
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace() // Handle exceptions
         }
+        return words
+    }
+
+    private fun isValid(word: String, validWords: Set<String>): Boolean {
+        return validWords.contains(word.trim())
     }
 }
